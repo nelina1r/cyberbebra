@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:hidden="http://www.w3.org/1999/xhtml"> <!--подключение шаблонизатора thymeleaf-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+<head>
+    <title>Матч</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!--подключение css файла-->
+</head>
+<style>
+    body{
+        background-color: #f8f9fa;
+    }
+</style>
+<body bgcolor="#f8f9fa">
+<header th:insert="blocks/header :: header"></header>
+<!--insert - встраивает фрагмент внутрь тега "путь :: фрагмент"-->
+<div class="container mt-5" style="display: inline;background-color: #f8f9fa">
+    <h1>Матч</h1>
+    <!--container - встроенный класс, добавляющий отступы. mt-5 - отступы сверху, равные 5-ти пикс-->
+    <div th:each="el : ${match}" class="album py-5 bg-light det" style="padding-left: 20px; padding-right: 20px;background-color: #f8f9fa"><!--вывод записей перебором через цикл. el(переменная) : (указание того, что мы перебираем)-->
+        <div id="t1" style="display: inline-block;width: 40%;float: left;background-color: #f8f9fa">
+            <h1 th:text="${el.team1.name}"></h1>
+            <img class="himg" th:src="${el.team1.img}"><br>
+        <b>Состав:</b>
+        <div th:each="player : ${el.team1.roster}" class="album py-5 bg-light det" style="padding-left: 20px; padding-right: 20px;background-color: #f8f9fa">
+            <p><img th:src="${player.img}" width="150" height="150"></p>
+            <p style="font-size: 20px" th:text="${player.name}"></p>
+        </div>
+        </div>
+        <div id="cent" style="display: inline-block;width: 20%;background-color: #f8f9fa">
+            <b>Турнир:</b>
+            <p th:text="${el.tournament.title}"></p>
+            <b>Дисциплина:</b>
+            <p th:text="${el.discipline.name}"></p>
+            <b>Дата начала матча:</b>
+            <p th:text="${el.time.toString().replaceAll('T',' ')}"></p>
+        </div>
+        <div id="t2" style="display: inline-block;width: 40%;float: right;background-color: #f8f9fa">
+            <h1 th:text="${el.team2.name}"></h1>
+            <img class="himg" th:src="${el.team2.img}"><br>
+            <b>Состав:</b>
+            <div th:each="player : ${el.team2.roster}" class="album py-5 bg-light det" style="padding-left: 20px; padding-right: 20px;">
+                <p><img th:src="${player.img}" width="150" height="150"></p>
+                <p style="font-size: 20px" th:text="${player.name}"></p>
+            </div>
+        </div>
+        <div style="background-color: #f8f9fa">
+            <div style="display: inline-flex;background-color: #f8f9fa">
+                <a sec:authorize="hasAuthority('ADMIN')" th:href="'/matches/' + ${el.id} + '/edit'" class="btn btn-warning" style="margin-right: 7px; color: #fff; background-color: #ef2323; border-color: #ef2323">Редактировать</a> <!--ссылка на редактирование статьи-->
+                <!--            <a th:action="'/activity/' + ${el.id} + '/remove'" class="btn btn-warning btn-danger" type="submit" method="post">Удалить</a>-->
+                <form sec:authorize="hasAuthority('ADMIN')" th:action="'/matches/' + ${el.id} + '/remove'" method="post"> <!--method="post" - информация передаётся в теле запроса-->
+                    <button class="btn btn-warning" style="color: #fff; background-color: #ef2323; border-color: #ef2323" type="submit">Удалить</button> <!--type="submit" - перезагрузка страницы и отправка данных на сервер при нажатии на кнопку-->
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--insert - встраивает фрагмент внутрь тега "путь :: фрагмент"-->
+</body>
+</html>

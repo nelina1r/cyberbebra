@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"> <!--подключение шаблонизатора thymeleaf-->
+<head>
+    <title>Мероприятия</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!--подключение css файла-->
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<!--insert - встраивает фрагмент внутрь тега "путь :: фрагмент"-->
+<div class="container mt-5">
+    <h1>Турниры</h1>
+    <!--container - встроенный класс, добавляющий отступы. mt-5 - отступы сверху, равные 5-ти пикс-->
+    <div th:each="el : ${activity}" class="album py-5 bg-light det" style="padding-left: 20px; padding-right: 20px;"> <!--вывод записей перебором через цикл. el(переменная) : (указание того, что мы перебираем)-->
+        <h1 th:text="${el.title}"/> <!--обращение к полю title-->
+        <img style="width: 300px;height: 300px" th:src="${el.img}">
+<!--        <a><b>Дата мероприятия: </b><a th:text="${el.date}"></a></a>-->
+        <p style="padding-top: 15px; padding-bottom: 15px;"><b>Дата проведения:</b><p>С <td th:text="${el.start}"></td> по <td th:text="${el.end}"></td></p>
+        <p><b>Сумма призовых:</b><td th:text="${el.prize}"><td>$</p>
+        <p th:utext="${el.fullText}"/>
+        <p>Участники:</p>
+        <div th:each="team : ${el.participants}" class="album py-5 bg-light det" style="padding-left: 20px; padding-right: 20px;">
+            <p><img th:src="${team.img}" width="150" height="150"></p>
+            <p th:text="${team.name}"></p>
+        </div>
+
+        <div>
+            <div style="display: inline-flex;">
+                <a sec:authorize="hasAuthority('ADMIN')" th:href="'/tournaments/' + ${el.id} + '/edit'" class="btn btn-warning" style="margin-right: 7px; color: #fff; background-color: #ef2323; border-color: #ef2323">Редактировать</a> <!--ссылка на редактирование статьи-->
+                <!--            <a th:action="'/activity/' + ${el.id} + '/remove'" class="btn btn-warning btn-danger" type="submit" method="post">Удалить</a>-->
+                <form th:action="'/tournaments/' + ${el.id} + '/remove'" method="post"> <!--method="post" - информация передаётся в теле запроса-->
+                    <button sec:authorize="hasAuthority('ADMIN')" class="btn btn-warning" style="color: #fff; background-color: #ef2323; border-color: #ef2323" type="submit">Удалить</button> <!--type="submit" - перезагрузка страницы и отправка данных на сервер при нажатии на кнопку-->
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--insert - встраивает фрагмент внутрь тега "путь :: фрагмент"-->
+</body>
+</html>

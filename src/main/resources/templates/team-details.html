@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:hidden="http://www.w3.org/1999/xhtml"> <!--подключение шаблонизатора thymeleaf-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+<head>
+    <title>Команда</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!--подключение css файла-->
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<!--insert - встраивает фрагмент внутрь тега "путь :: фрагмент"-->
+<div class="container mt-5">
+    <h1>Команда</h1>
+    <!--container - встроенный класс, добавляющий отступы. mt-5 - отступы сверху, равные 5-ти пикс-->
+    <div th:each="el : ${team}" class="album py-5 bg-light det" style="padding-left: 20px; padding-right: 20px;"> <!--вывод записей перебором через цикл. el(переменная) : (указание того, что мы перебираем)-->
+        <h1 th:text="${el.name}"/> <!--обращение к полю title-->
+        <img class="himg" th:src="${el.img}"><br>
+        <br><b>Сайт команды</b>
+        <p><a th:text="${el.site}" th:href="${el.site}" target="_blank"></a></p>
+        <b>Описание</b>
+        <p th:utext="${el.description}"/><br>
+        <p style="padding-top: 15px; padding-bottom: 15px;"><b>Дата основания: </b><td th:text="${el.date}"></td></p>
+        <b>Состав:</b>
+        <div th:each="player : ${el.roster}" class="album py-5 bg-light det" style="padding-left: 20px; padding-right: 20px;">
+            <p><img th:src="${player.img}" width="150" height="150"></p>
+            <p style="font-size: 20px" th:text="${player.name}"></p>
+        </div>
+        <div>
+            <div style="display: inline-flex;">
+                <a sec:authorize="hasAuthority('ADMIN')" th:href="'/teams/' + ${el.id} + '/edit'" class="btn btn-warning" style="margin-right: 7px; color: #fff; background-color: #ef2323; border-color: #ef2323">Редактировать</a> <!--ссылка на редактирование статьи-->
+                <!--            <a th:action="'/activity/' + ${el.id} + '/remove'" class="btn btn-warning btn-danger" type="submit" method="post">Удалить</a>-->
+                <form sec:authorize="hasAuthority('ADMIN')" th:action="'/teams/' + ${el.id} + '/remove'" method="post"> <!--method="post" - информация передаётся в теле запроса-->
+                    <button class="btn btn-warning" style="color: #fff; background-color: #ef2323; border-color: #ef2323" type="submit">Удалить</button> <!--type="submit" - перезагрузка страницы и отправка данных на сервер при нажатии на кнопку-->
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--insert - встраивает фрагмент внутрь тега "путь :: фрагмент"-->
+</body>
+</html>

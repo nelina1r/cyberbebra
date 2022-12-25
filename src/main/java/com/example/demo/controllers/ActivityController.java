@@ -88,7 +88,12 @@ public class ActivityController {
         if(activity.isPresent()) {
             ArrayList<Activity> res = new ArrayList<>();
             activity.ifPresent(res::add); //из класса Optional переводим в класс ArrayList
-            model.addAttribute("activity", res);
+            if (res.get(0).getTitle().contains("International")) {
+                boolean tr = true;
+                model.addAttribute("tr",tr);
+                model.addAttribute("activity", res);
+            }
+            model.addAttribute("int",activityService.intNews());
             return "activity-details";
         } else {
             return "redirect:/tournaments"; //перенаправление на указанную страницу

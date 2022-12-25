@@ -1,7 +1,7 @@
 insert into users(id,password,username,role)
-values (1,'eLzDCaZBd3usUy6Gi8jQwOnNgpbg3hntvJUdgpLE8jR3n12amKufG','adm','ADMIN');
+values (1,'$2a$08$eLzDCaZBd3usUy6Gi8jQwOnNgpbg3hntvJUdgpLE8jR3n12amKufG','adm','ADMIN');
 insert into users(id,password,username,role)
-values (2,'eLzDCaZBd3usUy6Gi8jQwOnNgpbg3hntvJUdgpLE8jR3n12amKufG','adm2','ADMIN');
+values (2,'$2a$08$eLzDCaZBd3usUy6Gi8jQwOnNgpbg3hntvJUdgpLE8jR3n12amKufG','adm2','ADMIN');
 
 insert into discipline(id,img,name)
 values (1,'https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota2_social.jpg','Dota 2');

@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.models.Activity;
 import com.example.demo.models.Match;
 import com.example.demo.repo.ActivityRepository;
+import com.example.demo.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,17 +25,6 @@ public class ActivityService {
         ArrayList<Activity> activities = new ArrayList<>();
         activityRepository.findAll().forEach(activities::add);
         return activities;
-    }
-
-    public List<Activity> intNews(){
-        List<Activity> activities = findAll();
-        List<Activity> activities1 = new ArrayList<>();
-        for (Activity activity : activities){
-            if (activity.getTitle().contains("International")){
-                activities1.add(activity);
-            }
-        }
-        return activities1;
     }
 
     @Transactional

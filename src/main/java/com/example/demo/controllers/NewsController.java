@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repo.PostRepository;
+import com.example.demo.repo.UserRepository;
 import com.example.demo.services.PostService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,15 @@ public class NewsController {
     @Autowired //анотация для создания переменной, ссылающейся на репозиторий
     private PostService postService; //указание репозитория, к которому обращаемся и название пееременной
     //private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/news")
     public String activity(Model model) {
         model.addAttribute("posts", postService.findAll(0,10).getContent());
         //model.addAttribute("posts", postService.findAll()); //передача значений
         model.addAttribute("title", "Новости");
+        model.addAttribute("flag",false);
         return "news";
     }
 
@@ -60,56 +64,6 @@ public class NewsController {
         }
         return "redirect:/login";
     }
-
-//    public NewsController(PostRepository postRepository) {
-//        this.postRepository = postRepository;
-//    }
-
-//    @RequestMapping(value = "/news", method = RequestMethod.GET)
-//    public String listBooks(
-//            Model model,
-//            @RequestParam("page") Optional<Integer> page,
-//            @RequestParam("size") Optional<Integer> size) {
-//        int currentPage = page.orElse(1);
-//        int pageSize = size.orElse(5);
-//
-//        Page<Post> postPage = postService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-//
-//        model.addAttribute("postPage", postPage);
-//
-//        int totalPages = postPage.getTotalPages();
-//        if (totalPages > 0) {
-//            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-//                    .boxed()
-//                    .collect(Collectors.toList());
-//            model.addAttribute("pageNumbers", pageNumbers);
-//        }
-//
-//        return "news";
-//    }
-
-//    @GetMapping("/news")
-//    public String news(/*HttpServletRequest request, */Model model) {
-////        int page = 0; //номер страницы по умолчанию равен 0
-////        int size = 10; //размер страницы по умолчанию 10
-////        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
-////            page = Integer.parseInt(request.getParameter("page")) - 1;
-////        }
-////
-////        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
-////            size = Integer.parseInt(request.getParameter("size"));
-////        }
-//
-////        model.addAttribute("posts", postRepository.findAll(PageRequest.of(page, size)).getContent());
-////        Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
-////        Pageable pageable = PageRequest.of(0, 10);
-////        Page<Post> page = postRepository.findAll(pageable);
-//        model.addAttribute("posts", postService.findAll(0,10).getContent());
-////        model.addAttribute("posts", postService.findAll()); //передача значений
-////        model.addAttribute("posts", postRepository.findAll());
-//        model.addAttribute("title", "Новости");
-//        return "news";
-//    }
 
     @GetMapping("/news/add") //GetMapping - пользователь переходит по определённому адресу
     public String newsAdd(Model model) {
@@ -172,4 +126,19 @@ public class NewsController {
         return "redirect:/news"; //переадресация пользователя на указанную страницу после удаления статьи
     }
 
+    @GetMapping("/news/by")
+    public String getPostsByAuthor(@RequestParam(name = "author") String username, Model model){
+        List<Post> posts = postService.findAll();
+        List<Post> postList = new ArrayList<>();
+        for (Post post : posts){
+            if (userRepository.findByUsername(post.getAuthor()).getUsername().equals(username)){
+                postList.add(post);
+            }
+        }
+        model.addAttribute("flag",true);
+        model.addAttribute("size",String.valueOf(postList.size()));
+        model.addAttribute("posts",postList);
+        model.addAttribute("author",username);
+        return "news";
+    }
 }

@@ -19,8 +19,10 @@
         <img class="himg" th:src="${el.img}">
 <!--        <a><b>Дата мероприятия: </b><a th:text="${el.date}"></a></a>-->
         <p style="padding-top: 15px; padding-bottom: 15px;"><b>Дата публикации: </b><td th:text="${#dates.format(el.date, 'dd MMMM yyyy')}"></td></p>
-        <p>Автор:</p><br>
-        <p th:utext="${el.author}"/>
+        <p>Автор:</p>
+        <a th:href="@{'/news/by?author=' + ${el.author}}"><p th:text="${el.author}"></a>
+        <br>
+        <br>
         <p th:utext="${el.fullText}"/>
         <div>
             <div style="display: inline-flex;">
@@ -32,6 +34,7 @@
             </div>
         </div>
     </div>
+
 
 </div>
 <!--insert - встраивает фрагмент внутрь тега "путь :: фрагмент"-->

@@ -6,6 +6,7 @@ import com.example.demo.models.Team;
 import com.example.demo.repo.DisciplineRepository;
 import com.example.demo.repo.TeamRepository;
 import com.example.demo.services.ActivityService;
+import com.example.demo.services.PostService;
 import com.example.demo.services.TeamService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,9 @@ public class ActivityController {
 
     @Autowired //анотация для создания переменной, ссылающейся на репозиторий
     private ActivityService activityService; //указание репозитория, к которому обращаемся и название пееременной
+
+    @Autowired
+    private PostService postService;
 
     @Autowired
     private TeamRepository teamRepository;
@@ -91,9 +95,9 @@ public class ActivityController {
             if (res.get(0).getTitle().contains("International")) {
                 boolean tr = true;
                 model.addAttribute("tr",tr);
-                model.addAttribute("activity", res);
+                model.addAttribute("xuy",postService.intNews());
             }
-            model.addAttribute("int",activityService.intNews());
+            model.addAttribute("activity", res);
             return "activity-details";
         } else {
             return "redirect:/tournaments"; //перенаправление на указанную страницу

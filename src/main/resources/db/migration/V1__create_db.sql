@@ -90,7 +90,7 @@ create table activity
 
 create table team_roster
 (
-    id_team BIGINT not null,
+    team_id BIGINT not null,
     roster_id BIGINT not null
 );
 
@@ -101,7 +101,7 @@ create table activity_participants
 );
 
 alter table team_roster
-    add constraint fkbl8nk01gsmuq4y4jqxxsm5g8b foreign key (id_team) references team;
+    add constraint fkbl8nk01gsmuq4y4jqxxsm5g8b foreign key (team_id) references team;
 alter table team_roster
     add constraint fkf4jcx35uw68ue9exa8hnfgsu4 foreign key (roster_id) references player;
 

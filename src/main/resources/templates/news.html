@@ -12,7 +12,10 @@
     <div class="container mt-5">
         <!--container - встроенный класс, добавляющий отступы. mt-5 - отступы сверху, равные 5-ти пикс-->
         <h1>Новости</h1>
-
+        <div th:if="${flag}">
+            <b>Автор: <p th:utext="${author}"></p></b>
+            <b>Количество статей: <p th:text="${size}"></p></b>
+        </div>
         <div sec:authorize="hasAuthority('ADMIN')">
             <div class="btn-group"><a th:href="'/news/add'" class="btn an" style="color: #fff; background-color: #ef2323; border-color: #ef2323">Добавить новость</a></div>
         </div>
@@ -38,6 +41,7 @@
 
                 </div>
             </div>
+
 
             <!-- разбиение на страницы -->
 

@@ -42,19 +42,25 @@ public class MatchController {
         List<Match> dota = new ArrayList<>();
         List<Match> cs = new ArrayList<>();
         List<Match> lol = new ArrayList<>();
+        List<Match> past = new ArrayList<>();
         for (Match match : matches){
-            if (match.getDiscipline().getName().equals("Dota 2")){
-                dota.add(match);
+            if (match.getId().equals(1L) || match.getId().equals(2L)){
+                past.add(match);
             }
             else if (match.getDiscipline().getName().equals("CS:GO")){
                 cs.add(match);
             }
-            else
+            else if (match.getDiscipline().getName().equals("League of Legends")){
                 lol.add(match);
+            }
+            else if (match.getDiscipline().getName().equals("Dota 2")){
+                dota.add(match);
+            }
         }
         model.addAttribute("dota", dota); //передача значений
         model.addAttribute("cs", cs); //передача значений
         model.addAttribute("lol", lol); //передача значений
+        model.addAttribute("past",past);
         model.addAttribute("title", "Матчи");
         return "match";
     }
@@ -82,10 +88,19 @@ public class MatchController {
     @GetMapping("/matches/{id}") //{id} - динамическое значение url-адреса
     public String matchDetails(@PathVariable(value = "id") long id, Model model) { //@PathVariable - анотация, принимающая динамический параметр из url-адреса (в определённый параметр (long id) помещается значение, полученное из url-адреса
         Optional<Match> match = matchService.findById(id); //нахождение записи по id и помещение в объект post на основе класса Optional и модели <Post>
+        boolean flag = false;
+        model.addAttribute("flag",flag);
         if(match.isPresent()) {
             ArrayList<Match> res = new ArrayList<>();
             match.ifPresent(res::add); //из класса Optional переводим в класс ArrayList
             model.addAttribute("match", res);
+            if (res.get(0).getId() == 1 || res.get(0).getId() == 2){
+                model.addAttribute("flag", true);
+                boolean first = res.get(0).getId() == 1;
+                boolean second = res.get(0).getId() == 2;
+                model.addAttribute("first",first);
+                model.addAttribute("second",second);
+            }
             return "match-details";
         } else {
             return "redirect:/matches"; //перенаправление на указанную страницу

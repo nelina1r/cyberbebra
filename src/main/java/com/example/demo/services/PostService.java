@@ -46,6 +46,18 @@ public class PostService {
         return posts;
     }
 
+    @Transactional
+    public List<Post> intNews(){
+        List<Post> posts = findAll();
+        List<Post> posts1 = new ArrayList<>();
+        for (Post post : posts){
+            if (post.getTitle().contains("International")){
+                posts1.add(post);
+            }
+        }
+        return posts1;
+    }
+
 //    Pageable pageable = PageRequest.of(0, 10);
 //    Page<Post> page = postRepository.findAll(pageable);
 //    Pageable pageable = PageRequest.of(0, 20, Sort.by("firstName"));

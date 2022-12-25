@@ -70,6 +70,23 @@
                     </div>
                 </div>
             </div>
+            <h2>Прошедшие матчи</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col an" th:each="el : ${past}" >
+                    <div class="card shadow-sm blocks">
+                        <img class="himg" th:src="${el.tournament.img}">
+                        <div class="card-body">
+                            <b th:text="${el.team1.name}"></b> vs <b th:text="${el.team2.name}"></b><br>
+                            <!--                                <a><b>Дата: </b><a th:text="${el.date}"></a></a>-->
+                            <b>Дата начала матча:</b>
+                            <p th:text="${el.time.toString().replaceAll('T',' ')}"></p>
+                        </div>
+                        <div class="btn-cont" style="  padding-bottom: 20px; padding-left: 20px;">
+                            <a th:href="'/matches/' + ${el.id}" class="btn" style="color: #fff; background-color: #ef2323; border-color: #ef2323">Детальнее</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -27,9 +27,9 @@
         <h3>Последние статьи на эту тему</h3>
         <div th:if="${tr}" class="album py-5 bg-light">
         <table>
-            <th:block th:each="ss : ${int}">
+            <th:block th:each="ss : ${xuy}">
                 <tr>
-                    <td th:href="/cybernews-production.up.railway.app/news/${ss.id}"><p th:text="${ss.title}"></td>
+                    <a th:href="@{'/news/' + ${ss.id}}"><p th:text="${ss.title}"></a>
                 </tr>
             </th:block>
         </table>

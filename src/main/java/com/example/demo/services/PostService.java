@@ -5,6 +5,7 @@ import com.example.demo.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +39,7 @@ public class PostService {
         return postPage;
     }*/
 
+    @Transactional
     public List<Post> findAll() {
         ArrayList<Post> posts = new ArrayList<>();
         postRepository.findAll().forEach(posts::add);
@@ -48,22 +50,27 @@ public class PostService {
 //    Page<Post> page = postRepository.findAll(pageable);
 //    Pageable pageable = PageRequest.of(0, 20, Sort.by("firstName"));
 
+    @Transactional
     public Page<Post> findAll(int page, int size) {
         return postRepository.findAll(PageRequest.of(page, size, Sort.by("date")));
     }
 
+    @Transactional
     public Post save(Post post) {
         return postRepository.save(post);
     }
 
+    @Transactional
     public Optional<Post> findById(long id) {
         return  postRepository.findById(id);
     }
 
+    @Transactional
     public boolean existsById(long id) {
         return postRepository.existsById(id);
     }
 
+    @Transactional
     public void delete(Post post) {
         postRepository.delete(post);
     }

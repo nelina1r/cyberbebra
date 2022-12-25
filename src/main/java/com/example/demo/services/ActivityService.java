@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,26 +25,32 @@ public class ActivityService {
         return activities;
     }
 
+    @Transactional
     public Page<Activity> findAll(int page, int size) {
         return activityRepository.findAll(PageRequest.of(page, size, Sort.by("date")));
     }
 
+    @Transactional
     public Activity save(Activity activity) {
         return activityRepository.save(activity);
     }
 
+    @Transactional
     public Optional<Activity> findById(long id) {
         return  activityRepository.findById(id);
     }
 
+    @Transactional
     public boolean existsById(long id) {
         return activityRepository.existsById(id);
     }
 
+    @Transactional
     public void delete(Activity activity) {
         activityRepository.delete(activity);
     }
 
+    @Transactional
     public List<Activity> findAllByDiscipline(String disciplineName){
         List<Activity> tournaments = new ArrayList<>();
         activityRepository.findAll().forEach(activity -> {
